@@ -1,50 +1,150 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NasaApodGallery</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/NasaApodGallery.styles.css" asp-append-version="true" />
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - NASA APOD Gallery</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Application CSS -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <!-- NASA gallery CSS -->
+    <link rel="stylesheet"
+          href="~/css/gallery.css"
+          asp-append-version="true" />
 </head>
-<body>
+
+<body class="nasa-body">
+
+    <!-- Navigation bar -->
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">NasaApodGallery</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg nasa-navbar">
+            <div class="container">
+
+                <!-- Website brand -->
+                <a class="navbar-brand nasa-brand"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    <span class="brand-icon">✦</span>
+                    NASA <span class="brand-accent">APOD</span>
+                </a>
+
+                <!-- Mobile menu button -->
+                <button class="navbar-toggler nasa-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#nasaNavigation"
+                        aria-controls="nasaNavigation"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <!-- Navigation links -->
+                <div class="collapse navbar-collapse"
+                     id="nasaNavigation">
+
+                    <ul class="navbar-nav ms-auto align-items-lg-center">
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link nasa-nav-link"
+                               asp-controller="Home"
+                               asp-action="Index">
+                                Home
+                            </a>
                         </li>
+
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link nasa-nav-link"
+                               href="https://science.nasa.gov/apod/"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                NASA APOD
+                            </a>
                         </li>
+
                     </ul>
                 </div>
+
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
+    <!-- Main content without an extra Bootstrap container -->
+    <main class="nasa-main">
+        @RenderBody()
+    </main>
+
+    <!-- Footer -->
+    <footer class="nasa-footer">
         <div class="container">
-            &copy; 2026 - NasaApodGallery - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+            <div class="row gy-4 align-items-start">
+
+                <!-- Footer branding -->
+                <div class="col-12 col-md-6">
+                    <h5 class="footer-title">
+                        ✦ NASA <span class="brand-accent">APOD</span>
+                    </h5>
+
+                    <p class="footer-description">
+                        Explore the beauty of the universe through
+                        NASA's Astronomy Picture of the Day.
+                    </p>
+                </div>
+
+                <!-- Footer links -->
+                <div class="col-12 col-md-6 text-md-end">
+                    <h6 class="footer-heading">
+                        Quick Links
+                    </h6>
+
+                    <a class="footer-link"
+                       asp-controller="Home"
+                       asp-action="Index">
+                        Home
+                    </a>
+
+                    <a class="footer-link"
+                       href="https://science.nasa.gov/apod/"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        Official NASA APOD
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="footer-divider"></div>
+
+            <div class="footer-bottom">
+                <span>
+                    &copy; @DateTime.Now.Year NASA APOD Gallery
+                </span>
+
+                <span>
+                    Astronomy images and information: NASA APOD
+                </span>
+            </div>
+
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap JavaScript -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

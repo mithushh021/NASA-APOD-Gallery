@@ -1,35 +1,164 @@
 ﻿
-@model List<NasaApodGallery.DTOs.ApodDto>
+@model List<NasaApodGallery.Models.Apod>
 
 @{
     ViewData["Title"] = "NASA APOD Gallery";
 }
 
-<h1>NASA Astronomy Picture of the Day</h1>
+<div class="space-gallery">
+    <div class="container">
 
-<p>Total pictures received: @Model.Count</p>
+        <!-- Gallery heading -->
+        <div class="gallery-header">
+            <span class="gallery-label">
+                NASA SPACE EXPLORATION
+            </span>
 
-@foreach (var picture in Model)
-{
-    <div>
-        <h3>@picture.Title</h3>
+            <h1 class="gallery-title">
+                Astronomy Picture of the Day
+            </h1>
 
-        <p>Date: @picture.Date</p>
+            <p class="gallery-description">
+                Discover the wonders of our universe through
+                breathtaking astronomy pictures from NASA.
+            </p>
 
-        <p>Media Type: @picture.MediaType</p>
+            <div class="picture-counter">
+                <span class="counter-number">@Model.Count</span>
+                <span>Pictures in Gallery</span>
+            </div>
+        </div>
 
-        @if (picture.MediaType == "image")
+        <!-- Responsive gallery -->
+        @if (Model.Count > 0)
         {
-            // Hdurl contains the actual astronomy image
-            <img src="@picture.Hdurl"
-                 alt="@picture.Title"
-                 width="300" />
+            <div class="row g-4 justify-content-center">
+
+                @foreach (var picture in Model)
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+                        <div class="space-card">
+
+                            <!-- Clickable image preview -->
+                            <div class="space-image-container">
+
+                                @if (picture.MediaType == "image")
+                                {
+                                    <button type="button"
+                                            class="image-preview-button"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#imageModal-@picture.Id"
+                                            aria-label="Preview @picture.Title">
+
+                                        <img src="@picture.Url"
+                                             alt="@picture.Title"
+                                             class="space-image"
+                                             loading="lazy" />
+                                    </button>
+                                }
+                                else
+                                {
+                                    <div class="space-video-placeholder">
+                                        <span>NASA Video</span>
+                                    </div>
+                                }
+
+                                <span class="media-badge">
+                                    @picture.MediaType.ToUpperInvariant()
+                                </span>
+                            </div>
+
+                            <!-- Card information -->
+                            <div class="space-card-body">
+
+                                <p class="space-date">
+                                    @picture.Date.ToString("dd MMMM yyyy")
+                                </p>
+
+                                <h2 class="space-card-title">
+                                    @picture.Title
+                                </h2>
+
+                                <div class="space-card-footer">
+
+                                    @if (picture.MediaType == "image")
+                                    {
+                                        <button type="button"
+                                                class="space-link preview-link"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#imageModal-@picture.Id">
+                                            Preview Image &rarr;
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <a href="@picture.Url"
+                                           target="_blank"
+                                           rel="noopener noreferrer"
+                                           class="space-link">
+                                            Watch Video &rarr;
+                                        </a>
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Image preview modals -->
+            @foreach (var picture in Model)
+            {
+                @if (picture.MediaType == "image")
+                {
+                    <div class="modal fade"
+                         id="imageModal-@picture.Id"
+                         tabindex="-1"
+                         aria-labelledby="imageTitle-@picture.Id"
+                         aria-hidden="true">
+
+                        <div class="modal-dialog modal-xl modal-dialog-centered">
+                            <div class="modal-content nasa-modal">
+
+                                <div class="modal-header nasa-modal-header">
+
+                                    <h2 class="modal-title fs-5"
+                                        id="imageTitle-@picture.Id">
+                                        @picture.Title
+                                    </h2>
+
+                                    <button type="button"
+                                            class="btn-close btn-close-white"
+                                            data-bs-dismiss="modal"
+                                            aria-label="Close">
+                                    </button>
+                                </div>
+
+                                <div class="modal-body nasa-modal-body">
+
+                                    <img src="@picture.Url"
+                                         alt="@picture.Title"
+                                         class="modal-preview-image" />
+
+                                    <p class="modal-picture-date">
+                                        @picture.Date.ToString("dd MMMM yyyy")
+                                    </p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
         }
         else
         {
-            <p>This APOD contains a video.</p>
+            <div class="empty-gallery">
+                <h3>No pictures available</h3>
+                <p>No NASA pictures have been saved yet.</p>
+            </div>
         }
 
-        <hr />
     </div>
-}
+</div>

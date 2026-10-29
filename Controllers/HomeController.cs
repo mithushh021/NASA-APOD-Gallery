@@ -1,36 +1,29 @@
 
-using Microsoft.AspNetCore.Mvc; // Provides MVC controller functionality
-using NasaApodGallery.Services; // Imports our NASA API service
-using NasaApodGallery.DTOs; // Imports our NASA DTO class
+using Microsoft.AspNetCore.Mvc; // MVC functionality
+using NasaApodGallery.Data; // ADO.NET repository
+using NasaApodGallery.Models; // APOD database model
 
 namespace NasaApodGallery.Controllers
 {
-    // Handles requests to the home page
     public class HomeController : Controller
     {
-        // Stores our NASA API service
-        private readonly NasaApiService _nasaService;
+        // Stores SQL Server repository
+        private readonly ApodRepository _repository;
 
-        // Constructor receives the NASA service automatically
-        public HomeController(NasaApiService nasaService)
+        // Constructor receives repository
+        public HomeController(ApodRepository repository)
         {
-            _nasaService = nasaService;
+            _repository = repository;
         }
 
-        // Handles requests to the home page
+        // Displays saved NASA pictures
         public async Task<IActionResult> Index()
         {
-            // Starting date for NASA pictures
-            string startDate = "2026-10-01";
+            // Retrieve saved pictures from SQL Server
+            List<Apod> pictures =
+                await _repository.GetAllApodsAsync();
 
-            // Ending date for NASA pictures
-            string endDate = "2026-10-05";
-
-            // Fetch NASA APOD data for the selected dates
-            List<ApodDto> pictures =
-                await _nasaService.GetApodAsync(startDate, endDate);
-
-            // Send the NASA data to our HTML view
+            // Send pictures to the view
             return View(pictures);
         }
     }
