@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿
+@model List<NasaApodGallery.DTOs.ApodDto>
+
+@{
+    ViewData["Title"] = "NASA APOD Gallery";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1>NASA Astronomy Picture of the Day</h1>
+
+<p>Total pictures received: @Model.Count</p>
+
+@foreach (var picture in Model)
+{
+    <div>
+        <h3>@picture.Title</h3>
+
+        <p>Date: @picture.Date</p>
+
+        <p>Media Type: @picture.MediaType</p>
+
+        @if (picture.MediaType == "image")
+        {
+            // Hdurl contains the actual astronomy image
+            <img src="@picture.Hdurl"
+                 alt="@picture.Title"
+                 width="300" />
+        }
+        else
+        {
+            <p>This APOD contains a video.</p>
+        }
+
+        <hr />
+    </div>
+}
