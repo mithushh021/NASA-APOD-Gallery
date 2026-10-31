@@ -1,0 +1,29 @@
+
+# NEW: Use .NET 10 SDK to build the application
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+
+WORKDIR /src
+
+# NEW: Copy the project and restore dependencies
+COPY . .
+RUN dotnet restore "NasaApodGallery.csproj"
+
+# NEW: Publish the application
+RUN dotnet publish "NasaApodGallery.csproj" -c Release -o /app/publish --no-restore
+
+# NEW: Use the ASP.NET Core 10 runtime
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+
+WORKDIR /app
+
+# NEW: Copy published application files
+COPY --from=build /app/publish .
+
+# NEW: Configure the HTTP port for Vercel
+ENV ASPNETCORE_URLS=http://+:80
+ENV ASPNETCORE_ENVIRONMENT=Production
+
+EXPOSE 80
+
+# NEW: Start the MVC application
+ENTRYPOINT ["dotnet", "NasaApodGallery.dll"]
