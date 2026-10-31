@@ -39,3 +39,13 @@ CREATE TABLE Apod
 -- Display all records
 SELECT * FROM Apod;
 
+USE NasaApodDB;
+
+UPDATE Apod
+SET Title = 'TEST - Image From SQL Server'
+WHERE [Date] = '2026-10-05';
+
+UPDATE Apod
+SET Title = 'M104: The Sombrero Galaxy''s Tidal Streams'
+WHERE [Date] = '2026-10-05';
+
